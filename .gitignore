@@ -1,0 +1,16 @@
+# Build artifacts
+*.o
+/forenc
+
+# Temporary test files
+/tests/tmp/
+/test_input.txt
+
+# Generated forensic manifests
+*.manifest.json
+case-*.json
+
+# Editors
+*~
+*.swp
+.vscode/
