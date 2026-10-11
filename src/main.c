@@ -1,11 +1,12 @@
-
+#include "diff.h"
 #include "hash.h"
 #include "manifest.h"
 #include "verify.h"
+
 #include <stdio.h>
 #include <string.h>
 
-#define FORENC_VERSION "0.1.0"
+#define FORENC_VERSION "0.2.0"
 
 static void print_help(const char *program)
 {
@@ -16,7 +17,8 @@ static void print_help(const char *program)
     printf("  --version       Display program version\n");
     printf("  hash <file>     Calculate the SHA-256 hash of a file\n");
     printf("  scan <dir> -o <file.json>  Create a JSON evidence manifest\n");
-	printf("  verify <manifest.json>  Verify file integrity\n");
+    printf("  verify <manifest.json>  Verify file integrity\n");
+    printf("  diff <old.json> <new.json>  Compare two manifests\n");
 }
 
 int main(int argc, char *argv[])
@@ -67,18 +69,29 @@ int main(int argc, char *argv[])
 
         return 0;
     }
-	if (strcmp(argv[1], "verify") == 0) {
-    	if (argc != 3) {
-        	fprintf(stderr, "Usage: %s verify <manifest.json>\n", argv[0]);
-        	return 1;
+
+    if (strcmp(argv[1], "verify") == 0) {
+        if (argc != 3) {
+            fprintf(stderr, "Usage: %s verify <manifest.json>\n",
+                    argv[0]);
+            return 1;
+        }
+
+        return verify_manifest(argv[2]) == 0 ? 0 : 1;
     }
 
-    return verify_manifest(argv[2]) == 0 ? 0 : 1;
-}
+    if (strcmp(argv[1], "diff") == 0) {
+        if (argc != 4) {
+            fprintf(stderr,
+                    "Usage: %s diff <baseline.json> <followup.json>\n",
+                    argv[0]);
+            return 1;
+        }
+
+        return diff_manifests(argv[2], argv[3]) == 0 ? 0 : 1;
+    }
 
     fprintf(stderr, "Error: unknown command '%s'\n", argv[1]);
     fprintf(stderr, "Use '%s --help' for usage.\n", argv[0]);
-
     return 1;
 }
-

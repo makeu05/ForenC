@@ -1,8 +1,7 @@
-
 CC = gcc
 TARGET = forenc
 
-SRC = src/main.c src/hash.c src/scanner.c src/manifest.c src/verify.c
+SRC = src/main.c src/hash.c src/scanner.c src/manifest.c src/verify.c src/diff.c
 OBJ = $(SRC:.c=.o)
 
 CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -Werror -O2
@@ -22,10 +21,6 @@ src/%.o: src/%.c
 test: $(TARGET)
 	./$(TARGET) --help
 	./$(TARGET) --version
-	printf 'abc' > test_input.txt
-	./$(TARGET) hash test_input.txt
-	rm -f test_input.txt
-
+	./tests/test_forenc.sh
 clean:
 	rm -f $(OBJ) $(TARGET) test_input.txt
-
