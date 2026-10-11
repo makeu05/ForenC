@@ -99,4 +99,6 @@ ForenC is an educational and developmental project. Validate its behavior in you
 
 ## License
 
-No license has been specified yet. All rights are reserved by default until a license is added to this repository.
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
